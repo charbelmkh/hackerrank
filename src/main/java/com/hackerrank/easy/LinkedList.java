@@ -1,25 +1,96 @@
 package com.hackerrank.easy;
 
+import java.util.HashMap;
+
 public class LinkedList {
+    // THINK OF THE EDGE CASES BEFORE WRITING ANYTHING
+    // SOME OF THEM LOOKS EASY
+
     public static void main(String[] args) {
-        SinglyLinkedList llist1 = new SinglyLinkedList();
-        llist1.insertNode(1);
-        llist1.insertNode(3);
-        llist1.insertNode(5);
+        SinglyLinkedList llist = new SinglyLinkedList();
+        llist.insertNode(3);
+        llist.insertNode(5);
+        llist.insertNode(10);
+        llist.insertNode(15);
+        System.out.println(hasCycle(llist.head));
 
-        SinglyLinkedList llist2 = new SinglyLinkedList();
-        llist2.insertNode(2);//0
-        llist2.insertNode(4);//1
-        llist2.insertNode(6);//2
-        llist2.insertNode(7);//3
+    }
 
-        int data = getNode(llist2.head, 4);
-        System.out.println(">>>>>>>" + data);
-        //printLinkedList(singlyLinkedListNode);
+      static boolean hasCycle(SinglyLinkedListNode head) {
+        HashMap<SinglyLinkedListNode, Integer> counter = new HashMap<>();
+        SinglyLinkedListNode node = head;
+        while (node.next != null) {
+            Integer count = counter.getOrDefault(node, 0);
+            if (count > 1) {
+                return true;
+            }
+            counter.put(node, count + 1);
+            node = node.next;
+        }
+        return false;
+    }
 
-        // 1 -> 2 -> 3 -> 4 -> 5
+    public static DoublyLinkedListNode reverse(DoublyLinkedListNode llist) {
+        if (llist.next == null) {
+            llist.next = llist.prev;
+            llist.prev = null;
+            return llist;
+        }
+        DoublyLinkedListNode doublyLinkedListNode = reverse(llist.next);
+        DoublyLinkedListNode temp = llist.next;
+        llist.next = llist.prev;
+        llist.prev = temp;
+        return doublyLinkedListNode;
 
+    }
 
+    public static DoublyLinkedListNode sortedInsert(DoublyLinkedListNode llist, int data) {
+        DoublyLinkedListNode newNode = new DoublyLinkedListNode(data);
+        // in case the head is null;
+        if (llist == null) {
+            return newNode;
+        }
+        // in case the newNode is the new head
+        if (data < llist.data) {
+            newNode.next = llist;
+            return newNode;
+        }
+        DoublyLinkedListNode node = llist;
+        while (node != null) {
+            if (node.data < data && (node.next == null || node.next.data >= data)) {
+                newNode.next = node.next;
+                node.next = newNode;
+                break;
+            }
+            node = node.next;
+        }
+        return llist;
+    }
+
+    public static int findMergeNode(SinglyLinkedListNode head1, SinglyLinkedListNode head2) {
+        SinglyLinkedListNode node1 = head1;
+        while (node1 != null) {
+            SinglyLinkedListNode node2 = head2;
+            while (node2 != null) {
+                if (node1 == node2) {
+                    return node1.data;
+                }
+                node2 = node2.next;
+            }
+            node1 = node1.next;
+        }
+        return 0;
+    }
+
+    public static SinglyLinkedListNode removeDuplicates(SinglyLinkedListNode llist) {
+        if (llist.next == null) {
+            return llist;
+        }
+        SinglyLinkedListNode nextNode = removeDuplicates(llist.next);
+        if (nextNode.data == llist.data) {
+            llist.next = nextNode.next;
+        }
+        return llist;
     }
 
     public static int getNode(SinglyLinkedListNode head, int positionFromTail) {
@@ -215,6 +286,46 @@ public class LinkedList {
             }
 
             this.tail = node;
+        }
+    }
+
+    static class DoublyLinkedList {
+        public DoublyLinkedListNode head;
+        public DoublyLinkedListNode tail;
+
+        public DoublyLinkedList() {
+            this.head = null;
+            this.tail = null;
+        }
+
+        public void insertNode(int nodeData) {
+            DoublyLinkedListNode node = new DoublyLinkedListNode(nodeData);
+
+            if (this.head == null) {
+                this.head = node;
+            } else {
+                this.tail.next = node;
+                node.prev = this.tail;
+            }
+
+            this.tail = node;
+        }
+    }
+
+    static class DoublyLinkedListNode {
+        public int data;
+        public DoublyLinkedListNode next;
+        public DoublyLinkedListNode prev;
+
+        public DoublyLinkedListNode(int nodeData) {
+            this.data = nodeData;
+            this.next = null;
+            this.prev = null;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("{\"data\":%s}", data);
         }
     }
 }

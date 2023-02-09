@@ -2,8 +2,45 @@ package com.hackerrank.easy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Arrays {
+
+
+    public static List<Integer> matchingStrings(List<String> stringList, List<String> queries) {
+        int[] result = new int[queries.size()];
+        for (int i = 0; i < queries.size(); i++) {
+            String query = queries.get(i);
+            for (String string : stringList) {
+                if(query.equals(string)){
+                    result[i]++;
+                }
+            }
+        }
+        // Write your code here
+        return java.util.Arrays.stream(result).boxed().collect(Collectors.toList());
+    }
+
+    public static long arrayManipulation(int n, List<List<Integer>> queries) {
+        long[] array = new long[n];
+        for (List<Integer> query : queries) {
+            int startIndex = query.get(0) - 1;
+            int endIndex = query.get(1);
+            int incrementBy = query.get(2);
+            array[startIndex] += incrementBy;
+            if (endIndex < n) {
+                array[endIndex] -= incrementBy;
+            }
+
+        }
+        long max = array[0];
+        for (int i = 1; i < array.length; i++) {
+            array[i] += array[i - 1];
+            max = Math.max(max, array[i]);
+        }
+        return max;
+    }
+
     /*
      * Complete the 'dynamicArray' function below.
      *
@@ -91,7 +128,7 @@ public class Arrays {
         }
         return rotatedArray;
     }
-    
+
     public static int[] mergeSortedArrays(int[] arrA, int[] arrB) {
         int indexMerged = 0, indexA = 0, indexB = 0;
         int[] mergedArray = new int[arrA.length + arrB.length];
