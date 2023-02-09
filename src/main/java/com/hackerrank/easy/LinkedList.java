@@ -6,16 +6,6 @@ public class LinkedList {
     // THINK OF THE EDGE CASES BEFORE WRITING ANYTHING
     // SOME OF THEM LOOKS EASY
 
-    public static void main(String[] args) {
-        SinglyLinkedList llist = new SinglyLinkedList();
-        llist.insertNode(3);
-        llist.insertNode(5);
-        llist.insertNode(10);
-        llist.insertNode(15);
-        System.out.println(hasCycle(llist.head));
-
-    }
-
       static boolean hasCycle(SinglyLinkedListNode head) {
         HashMap<SinglyLinkedListNode, Integer> counter = new HashMap<>();
         SinglyLinkedListNode node = head;
