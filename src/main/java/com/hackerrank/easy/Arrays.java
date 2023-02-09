@@ -91,4 +91,24 @@ public class Arrays {
         }
         return rotatedArray;
     }
+    
+    public static int[] mergeSortedArrays(int[] arrA, int[] arrB) {
+        int indexMerged = 0, indexA = 0, indexB = 0;
+        int[] mergedArray = new int[arrA.length + arrB.length];
+        while (indexA < arrA.length && indexB < arrB.length) {
+            if (arrA[indexA] < arrB[indexB]) {
+                mergedArray[indexMerged++] = arrA[indexA++];
+            } else {
+                mergedArray[indexMerged++] = arrB[indexB++];
+            }
+        }
+        while (indexA < arrA.length) {
+            mergedArray[indexMerged++] = arrA[indexA++];
+        }
+        while (indexB < arrB.length) {
+            mergedArray[indexMerged++] = arrB[indexB++];
+        }
+        return mergedArray;
+
+    }
 }
